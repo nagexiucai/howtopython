@@ -1,40 +1,27 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-from core.process import CMD, IMT, Manager, invoke
+from core.process import Worker, Manager
 
-class Indication(IMT):
-    def __call__(self):
+class Indication(Worker):
+    def do(self):
         while True:
-            data = self.q.get()
-            if data:
-                print 'indication data:', data
-                self.p.stdin.write(data)
-class Monitor(IMT):
-    def __call__(self):
+            self.write()
+class Monitor(Worker):
+    def do(self):
         while True:
-            data = self.p.stdout.read()
-            if data:
-                print 'monitor data:', data
-                self.q.put(data)
-class Treatment(IMT):
-    def __call__(self):
+            self.readout()
+class Treatment(Worker):
+    def do(self):
         while True:
-            data = self.p.stderr.read()
-            if data:
-                print 'treatment data:', data
-                self.q.put(data)
+            self.readerr()
 
 class Download(Manager):
-    def __call__(self):
-        self.ti.start()
-        self.to.start()
-        self.te.start()
-        self.p.wait()
-        print 'manager:', self.qoe.get()
-
-def download(cmd):
-    invoke(CMD(cmd), Indication, Monitor, Treatment, Download)
+    def run(self):
+        #self.p.wait()
+        while True:
+            print self.qoe.get()
 
 if __name__ == '__main__':
-    download('scp root@192.168.10.190:/home/bob/sources .')
+    cmd = 'ping -n 29 localhost'
+    Download(cmd, Indication, Monitor, Treatment).start()

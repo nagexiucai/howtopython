@@ -5,55 +5,56 @@ import subprocess
 import threading
 import Queue
 
-class CMD:
-    def __init__(self, cmd):
-        assert isinstance(cmd, basestring)
-        self.cmd = cmd
-    def __str__(self):
-        return self.cmd
-    __repr__ = __unicode__ = __str__
+CONFIG = {
+    'stdin':subprocess.PIPE,
+    'stdout':subprocess.PIPE,
+    'stderr':subprocess.PIPE
+    }
 
-class IMT:
+class Worker:
     def __init__(self, p, q):
         assert isinstance(p, subprocess.Popen)
         assert isinstance(q, Queue.Queue)
         self.p = p
         self.q = q
-        self()
     def __call__(self):
-        print 'perform %s (p=%s, q=%s)' % (self, self.p, self.q)
+        self.do()
+    def do(self):
+        print 'do %s (p=%s, q=%s)' % (self, self.p, self.q)
+    def get(self):
+        try:
+            return self.q.get(False)
+        except Queue.Empty:
+            return False
+    def put(self, data):
+        self.q.put(data)
+    def readout(self):
+        data = self.p.stdout.read()
+        if data: self.put(data)
+    def readerr(self):
+        data = self.p.stderr.read()
+        if data: self.put(data)
+    def write(self):
+        data = self.get()
+        if data:
+            self.p.stdin.write(data)
+            self.p.stdin.flush()
 
-class Manager:
-    def __init__(self, ti, to, te, p, qi, qoe):
-        assert isinstance(ti, threading.Thread)
-        assert isinstance(to, threading.Thread)
-        assert isinstance(te, threading.Thread)
-        assert isinstance(p, subprocess.Popen)
-        assert isinstance(qi, Queue.Queue)
-        assert isinstance(qoe, Queue.Queue)
-        self.ti = ti
-        self.to = to
-        self.te = te
-        self.p = p
-        self.qi = qi
-        self.qoe = qoe
-        self()
-    def __call__(self):
-        print 'perform %s (ti=%s, to=%s, te=%s, p=%s, qi=%s, qoe=%s)' % (self, self.ti, self.to, self.te, self.p, self.qi, self.qoe)
+class Manager(threading.Thread):
+    def __init__(self, cmd, i, o, e):
+        super(Manager, self).__init__()
+        self.qi = Queue.Queue()
+        self.qoe = Queue.Queue()
+        self.p = subprocess.Popen(cmd, shell=True, **CONFIG)
+        self.i = threading.Thread(target=i(self.p, self.qi))
+        self.o = threading.Thread(target=o(self.p, self.qoe))
+        self.e = threading.Thread(target=e(self.p, self.qoe))
+        self.setDaemon(True)
+        self.i.start()
+        self.o.start()
+        self.e.start()
+    def run(self):
+        print 'run %s' % self
 
-def invoke(cmd, indication, monitor, treatment, manager):
-    assert isinstance(cmd, CMD)
-    assert issubclass(indication, IMT)
-    assert issubclass(monitor, IMT)
-    assert issubclass(treatment, IMT)
-    assert issubclass(manager, Manager)
-    p = subprocess.Popen(`cmd`, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    qi = Queue.Queue()
-    qoe = Queue.Queue()
-    ti = threading.Thread(target=indication, args=(p, qi))
-    to = threading.Thread(target=monitor, args=(p, qoe))
-    te = threading.Thread(target=treatment, args=(p, qoe))
-    mngr = threading.Thread(target=manager, args=(ti, to, te, p, qi, qoe))
-    mngr.setDaemon(True)
-    mngr.start()
-    mngr.join()
+if __name__ == '__main__':
+    Manager('ping localhost', Worker, Worker, Worker).start()

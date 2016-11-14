@@ -58,3 +58,6 @@ class Manager(threading.Thread):
 
 if __name__ == '__main__':
     Manager('ping localhost', Worker, Worker, Worker).start()
+#     sp =subprocess.Popen('ping localhost', **CONFIG)
+#     _, __ = sp.communicate()
+#     print _, __

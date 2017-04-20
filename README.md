@@ -6,5 +6,5 @@
 
 ##DISTRIBUTE UNDER GPL
 
-###WECHAT(WEIXIN): NAGEXIUCAI
-###EMAIL: XIUCAI@PAHUASHAN.CN
+###WECHAT: nagexiucai
+###EMAIL: me@nagexiucai.com

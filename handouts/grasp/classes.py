@@ -119,4 +119,28 @@ DogClassifiedBySpecies.whatis()
 DogClassifiedBySpecies.Species = "rural"
 DogClassifiedBySpecies.whatis()
 
-# 懒人的新发现
+# 懒人的发现
+# 新新Dog类
+class Dog(object):
+    Name = "dog"
+    Sex = ""  # unknown
+    Species = ""  # undetermined
+    HairColor = ""  # unclear
+
+    @classmethod
+    def whatis(cls):
+        print "it is a", cls.Sex, cls.Species, cls.HairColor, cls.Name
+
+# 重新按性别划分
+class DogClassifiedBySex(Dog):
+    Sex = "undetermined"
+
+DogClassifiedBySex.Sex = "male"
+DogClassifiedBySex.whatis()
+
+# 重新按品种划分
+class DogClassifiedBySpecies(Dog):
+    Species = "undetermined"
+
+DogClassifiedBySpecies.Species = "city"
+DogClassifiedBySpecies.whatis()

@@ -9,7 +9,23 @@
 class Horse(object):
     '''
     as base class for horse family.
-    '''
+    '''  # Horse的类文档
+    Name = "horse"  # 定义名为Horse.Name的Horse的类变量
+
+    @classmethod  # 类方法装饰器
+    def clop(cls):  # 定义名为Horse.clop的一个自动参数的Horse的类方法
+        '''
+        sound of horse running.
+        '''  # Horse.clop的方法文档
+        print "clop~clop~"
+
+    @classmethod
+    def neigh(cls):
+        print "nei~gh~~~"
+
+    @classmethod
+    def whatis(cls):
+        print "it is a", Horse.Name
 
     def __init__(self, name, sex, age, address, order, *args, **kwargs):
         '''
@@ -20,6 +36,8 @@ class Horse(object):
         self._age = age  # 年龄
         self._address = address  # 住址
         self.__order = order  # 次序
+        self.multi_placeholder = args
+        self.multi_key_value = kwargs
 
     def __tell_me_the_order(self):
         '''
@@ -44,4 +62,6 @@ class Horse(object):
         '''
         self.stop = True  # 布尔真
 
-horse = Horse()
+horse = Horse("name", "sex", "age", "address", "order")
+horse.whatis()
+horse.run()

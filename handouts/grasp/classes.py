@@ -13,7 +13,7 @@ class Horse(object):  # 定义名为Horse的类
     '''
     as base class for horse family.
     '''  # Horse的类文档
-    Species = "Horse"  # 定义名为Horse.Species的Horse的类变量
+    Name = "horse"  # 定义名为Horse.Name的Horse的类变量
 
     @classmethod  # 类方法装饰器
     def clop(cls):  # 定义名为Horse.clop的一个自动参数的Horse的类方法
@@ -27,9 +27,9 @@ class Horse(object):  # 定义名为Horse的类
         print "nei~gh~~~"
 
     @classmethod
-    def what_am_i(cls):
-        print "i am a", Horse.Species
+    def whatis(cls):
+        print "it is a", Horse.Name
 
-Horse.what_am_i()
+Horse.whatis()
 Horse.clop()
 Horse.neigh()

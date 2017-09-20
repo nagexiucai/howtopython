@@ -4,30 +4,23 @@
 # @Author  : Bob
 # @Website : www.nagexiucai.com
 # @E-Mail  : me@nagexiucai.com
-# @Summary : 简述类的划分模式、大部分Python语法。
+# @Summary : 简述类的划分模式、部分语法和概念。
 
 # 马类定义例程
 # By Bob On 2017-09-13
-class Horse(object):
+
+class Horse(object):  # 定义名为Horse的类
     '''
     as base class for horse family.
-    '''
-    Species = "Horse"
+    '''  # Horse的类文档
+    Species = "Horse"  # 定义名为Horse.Species的Horse的类变量
 
-    def run(self):
-        self.stop = False
-        Horse.clop()
-
-    def stop(self):
+    @classmethod  # 类方法装饰器
+    def clop(cls):  # 定义名为Horse.clop的一个自动参数的Horse的类方法
         '''
-        tell a horse to stop running.
-        '''
-        self.stop = True  # a mark for running or not
-
-    @classmethod
-    def clop(cls):
-        while self.stop:
-            print "clop~clop~"
+        sound of horse running.
+        '''  # Horse.clop的方法文档
+        print "clop~clop~"
 
     @classmethod
     def neigh(cls):
@@ -35,7 +28,8 @@ class Horse(object):
 
     @classmethod
     def what_am_i(cls):
-        print "I am a", Horse.Species
+        print "i am a", Horse.Species
 
-if __name__ == '__main__':
-    Horse.neigh()
+Horse.what_am_i()
+Horse.clop()
+Horse.neigh()

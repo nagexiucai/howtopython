@@ -4,4 +4,4 @@
 # @Author  : Bob
 # @Website : www.nagexiucai.com
 # @E-Mail  : me@nagexiucai.com
-# @Summary : 
+# @Summary : 实例化概念讲解、部分Python语法。

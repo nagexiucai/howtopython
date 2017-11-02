@@ -37,4 +37,4 @@ print DiLu.Name, ChiTu.Name, WuZhui.Name
 # 怎么全都是“WuZhui”，明明在定义时候，分别写的是“DiLu”、“ChiTu”、“WuZhui”么
 
 # 因为所有的马名字，都用的Horse.Name，所有的马都是Horse的别名，此时，的卢、赤兔、乌锥是同一块肉
-print id(DiLu), id(ChiTu), id(WuZhui)
+print id(DiLu), id(ChiTu), id(WuZhui)  # 显示每匹马的在内存中的地址的哈希值

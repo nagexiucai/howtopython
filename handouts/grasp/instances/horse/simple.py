@@ -63,6 +63,15 @@ class Horse(object):  # 定义名为Horse的类
         '''
         self.stop = True  # 布尔真
 
-horse = Horse("name", "sex", "age", "address", "order")
-horse.whatis()
-horse.run()
+# horse = Horse("name", "sex", "age", "address", "order")
+# horse.whatis()
+# horse.run()
+
+# 定义三匹马的马群
+dilu = Horse("DiLu", "M", 7, "XuZhou", 001)
+chitu = Horse("ChiTu", "M", 9, "JiZhou", 002)
+wuzhui = Horse("WuZhui", "M", 8, "JinZhou", 003)
+
+dilu.whatis()
+chitu.whatis()
+wuzhui.whatis()

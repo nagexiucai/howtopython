@@ -78,3 +78,64 @@ _car.move((("south", 500), ("west", 100)))
 _car.speak("so sexy")
 print _car.whereami()
 # END II
+
+# START 多态
+class Auto(object):
+    def __init__(self):
+        self.sound = "voom"
+    def speedup(self):
+        print self.sound
+    def ParallelParking(self): # 多态的应用形式：接口和实现
+        try:
+            print self.start
+            self.backoff()
+            self.turninto()
+            self.turnoutof()
+            self.adjust()
+            print self.stop
+        except Exception:
+            print "undefined"
+            # raise Exception("backoff/turninto/turnoutof/adjust must be implemented")
+
+class BMW(Auto):
+    def __init__(self):
+        super(BMW, self).__init__()
+
+class Benz(Auto):
+    def __init__(self):
+        super(Benz, self).__init__()
+
+class Mazada(Auto):
+    def __init__(self):
+        self.sound = "booboo"
+
+class Kia(Auto):
+    def __init__(self):
+        Auto.__init__(self)
+        self.sound = "boo"
+        self.start = ".".join(("="*5, self.__class__.__name__, "start"))
+        self.stop = ".".join(("="*5, self.__class__.__name__, "stop"))
+    def backoff(self):
+        print "离车位方向车辆三十公分"
+    def turninto(self):
+        print "向车位打方向盘到极限"
+    def turnoutof(self):
+        print "反打方向盘到极限"
+    def adjust(self):
+        print "车身调正"
+
+auto = Auto()
+auto.speedup() # 调用自己的方法
+auto.ParallelParking() # 调用自己的接口（ParallelParking）、访问自己的方法（backoff/turninto/turnoutof/adjust，均未定义）和变量（start/stop，均未定义）
+
+bmw = BMW()
+bmw.speedup() # 调用继承父类的方法（speedup）、访问父类的变量（sound）
+benz = Benz()
+benz.speedup() # 调用继承父类的方法（speedup）、访问父类的变量（sound）
+mazada = Mazada()
+mazada.speedup() # 调用继承父类的方法（speedup）、访问自己的变量（sound）
+mazada.ParallelParking() # 调用继承父类的接口（ParallelParking）、访问父类的方法（backoff/turninto/turnoutof/adjust，均未定义）和变量（start/stop，均未定义）
+kia = Kia()
+kia.speedup() # 调用继承父类的方法（speedup）、访问自己的变量（sound）
+kia.ParallelParking() # 调用继承父类的接口（ParallelParking）、访问自己的方法（backoff/turninto/turnoutof/adjust）和变量（start/stop）
+# END 多态

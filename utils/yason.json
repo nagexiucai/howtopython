@@ -1,0 +1,233 @@
+{
+  "outputs": {
+    "router_01_firewall": {
+      "value": "657b2501-9eb6-46d2-a0ad-ed6cd7c8a84f"
+    },
+    "server_instance_02_floating_ip": {
+      "value": {
+        "get_attr": [
+          "instance_02_floating_ip",
+          "floating_ip_address"
+        ]
+      }
+    },
+    "server_instance_03_id": {
+      "value": {
+        "get_resource": "server_instance_03"
+      }
+    },
+    "router_01_id": {
+      "value": {
+        "get_resource": "router_01"
+      }
+    },
+    "router_01_name": {
+      "value": "router_01"
+    },
+    "server_instance_01_id": {
+      "value": {
+        "get_resource": "server_instance_01"
+      }
+    },
+    "server_instance_02_id": {
+      "value": {
+        "get_resource": "server_instance_02"
+      }
+    }
+  },
+  "heat_template_version": "2015-10-15",
+  "description": "create topo",
+  "resources": {
+    "instance_02_floating_ip": {
+      "type": "OS::Neutron::FloatingIP",
+      "properties": {
+        "floating_network_id": "external",
+        "port_id": {
+          "get_resource": "instance_02_port_0"
+        }
+      }
+    },
+    "server_instance_02": {
+      "type": "OS::Nova::Server",
+      "properties": {
+        "image": "cirrors",
+        "name": "instance_02",
+        "flavor": "m1.tiny",
+        "networks": [
+          {
+            "port": {
+              "get_resource": "instance_02_port_0"
+            }
+          }
+        ]
+      }
+    },
+    "network_02": {
+      "type": "OS::Neutron::Net",
+      "properties": {
+        "name": "network_02"
+      }
+    },
+    "network_01": {
+      "type": "OS::Neutron::Net",
+      "properties": {
+        "name": "network_01"
+      }
+    },
+    "server_instance_01": {
+      "type": "OS::Nova::Server",
+      "properties": {
+        "image": "cirrors",
+        "name": "instance_01",
+        "flavor": "m1.tiny",
+        "networks": [
+          {
+            "port": {
+              "get_resource": "instance_01_port_0"
+            }
+          },
+          {
+            "port": {
+              "get_resource": "instance_01_port_1"
+            }
+          }
+        ]
+      }
+    },
+    "sub_network_02": {
+      "type": "OS::Neutron::Subnet",
+      "properties": {
+        "network_id": {
+          "get_resource": "network_02"
+        },
+        "cidr": "192.168.2.1/24",
+        "gateway_ip": "192.168.2.1",
+        "name": "sub_network_02",
+        "enable_dhcp": true
+      }
+    },
+    "instance_03_port_0": {
+      "type": "OS::Neutron::Port",
+      "properties": {
+        "fixed_ips": [
+          {
+            "ip_address": "192.168.2.9"
+          }
+        ],
+        "network": {
+          "get_resource": "network_02"
+        },
+        "security_groups": [
+          "default"
+        ]
+      }
+    },
+    "instance_02_port_0": {
+      "type": "OS::Neutron::Port",
+      "properties": {
+        "fixed_ips": [
+          {
+            "ip_address": "192.168.0.10"
+          }
+        ],
+        "network": {
+          "get_resource": "network_01"
+        },
+        "security_groups": [
+          "default"
+        ]
+      }
+    },
+    "instance_01_port_0": {
+      "type": "OS::Neutron::Port",
+      "properties": {
+        "fixed_ips": [
+          {
+            "ip_address": "192.168.0.9"
+          }
+        ],
+        "network": {
+          "get_resource": "network_01"
+        },
+        "security_groups": [
+          "default"
+        ]
+      }
+    },
+    "network_02_interface": {
+      "type": "OS::Neutron::RouterInterface",
+      "properties": {
+        "router_id": {
+          "get_resource": "router_01"
+        },
+        "subnet_id": {
+          "get_resource": "sub_network_02"
+        }
+      }
+    },
+    "router_01": {
+      "type": "OS::Neutron::Router",
+      "properties": {
+        "external_gateway_info": {
+          "enable_snat": true,
+          "network": "85637a74-26d4-4bcd-9f5b-87741dfb60ce"
+        },
+        "name": "router_01"
+      }
+    },
+    "instance_01_port_1": {
+      "type": "OS::Neutron::Port",
+      "properties": {
+        "fixed_ips": [
+          {
+            "ip_address": "192.168.2.10"
+          }
+        ],
+        "network": {
+          "get_resource": "network_02"
+        },
+        "security_groups": [
+          "default"
+        ]
+      }
+    },
+    "network_01_interface": {
+      "type": "OS::Neutron::RouterInterface",
+      "properties": {
+        "router_id": {
+          "get_resource": "router_01"
+        },
+        "subnet_id": {
+          "get_resource": "sub_network_01"
+        }
+      }
+    },
+    "server_instance_03": {
+      "type": "OS::Nova::Server",
+      "properties": {
+        "image": "cirrors",
+        "name": "instance_03",
+        "flavor": "m1.tiny",
+        "networks": [
+          {
+            "port": {
+              "get_resource": "instance_03_port_0"
+            }
+          }
+        ]
+      }
+    },
+    "sub_network_01": {
+      "type": "OS::Neutron::Subnet",
+      "properties": {
+        "network_id": {
+          "get_resource": "network_01"
+        },
+        "cidr": "192.168.0.1/24",
+        "gateway_ip": "192.168.0.1",
+        "name": "sub_network_01",
+        "enable_dhcp": true
+      }
+    }
+  }
+}

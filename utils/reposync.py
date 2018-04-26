@@ -9,7 +9,8 @@
 ROOT = "C:\\eclipse\\workspace"
 
 GIT = ".git"
-GITUPDATE = '"C:\\Program Files\\Git\\git-cmd.exe" git pull'
+GITUPDATE = '"C:\\Program Files\\Git\\git-cmd.exe" git pull & exit'
+GITSTATUS = '"C:\\Program Files\\Git\\git-cmd.exe" git status & exit'
 
 SVN = ".svn"
 SVNUPDATE = '"C:\\Program Files\\TortoiseSVN\\bin\\svn.exe" update'

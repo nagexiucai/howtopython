@@ -1,2 +1,2 @@
 #!/usr/bin/env python
-#coding=utf8
+# -*- encoding: utf-8 -*-

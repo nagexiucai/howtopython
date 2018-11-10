@@ -14,3 +14,20 @@ def function(argumentA, argumentB, name="name", *arguments, **kwArguments):
     return "We can return more than one in one or each of them here"
 
 function("A", "B", "C", "D", "bob", age=None, sex=None)
+
+def Encrypt(f):
+    def Wrapper(s):
+        print "encrypt"
+        return f(s)
+    return Wrapper
+
+@Encrypt
+def TCPSend(s):
+    print "tcp", s
+
+@Encrypt
+def UDPSend(s):
+    print "udp", s
+
+TCPSend("TCP")
+UDPSend("UDP")

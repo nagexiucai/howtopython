@@ -52,6 +52,7 @@ for k, v in KWMAP.items():
     KWMAPOPPO[v] = k
 
 # TODO: @ async wait
+# TODO: 冒号、引号、括号
 
 TEST = u'''#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
@@ -83,7 +84,19 @@ def parse(code):
         codecopy = codecopy.replace(k, v)
     return codecopy
 
-PY = parse(TEST)
+# PY = parse(TEST)
 # print(PY)
 
-exec(PY)
+if __name__ == "__main__":
+    import sys
+    if not sys.version.startswith("3"):
+        print(u"必须是Python3引擎！")
+        exit()
+    # reload(sys)
+    # sys.setdefaultencoding("utf-8")
+    from sys import argv
+    if len(argv) == 2:
+        f = open(argv[1], encoding="utf-8")
+        PY = f.read()
+        f.close()
+        exec(PY)

@@ -19,7 +19,7 @@ KWMAP = {
     'and': u"且",
     'or': u"或",
     'as': u"作",
-    'assert': u'必有',
+    'assert': u"必有",
     'break': u"中止",
     'class': u"类",
     'continue': u"继续",
@@ -28,7 +28,7 @@ KWMAP = {
     'else': u"否则",
     'except': u"异常",
     'finally': u"最后",
-    'for': u'遍历',
+    'for': u"遍历",
     'from': u"自",
     'global': u"全局",
     'if': u"若是",
@@ -51,6 +51,10 @@ KWMAPOPPO = {}
 for k, v in KWMAP.items():
     KWMAPOPPO[v] = k
 
+EXTENSIONS = {
+    u"打印": "print"
+}
+
 # TODO: @ async wait
 # TODO: 冒号、引号、括号
 
@@ -58,7 +62,7 @@ TEST = u'''#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
 自 os 导入 getcwd
-print(getcwd())
+打印(getcwd())
 
 # 测试
 
@@ -75,12 +79,14 @@ test
     返回 u"姓名：%s，年龄：%s，电话号码：%s。" % (吾.姓名, 吾._年龄, 吾.__电话号码)
 
 用户 = 人(u"秀才", 28, u"秘密")
-print(用户)
+打印(用户)
 '''
 
 def parse(code):
     codecopy = code
     for k, v in KWMAPOPPO.items():
+        codecopy = codecopy.replace(k, v)
+    for k, v in EXTENSIONS.items():
         codecopy = codecopy.replace(k, v)
     return codecopy
 
@@ -99,4 +105,4 @@ if __name__ == "__main__":
         f = open(argv[1], encoding="utf-8")
         PY = f.read()
         f.close()
-        exec(PY)
+        exec(parse(PY))

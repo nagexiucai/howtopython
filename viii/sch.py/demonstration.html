@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <meta name='keywords' content='那个秀才 SCH.PY'/>
+    <meta name='description' content='配套演示辅助'/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SCH.PY Demonstration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        input {display: block;}
+        p {margin: 0; padding: 0;}
+        span {display: inline-block; margin: 0; padding: 0;}
+        .graph-container {width: 100%;}
+        .graph-item {width: 100%;}
+        .bit {color: blue;}
+        .end {color: red;}
+    </style>
+    <script>
+        function ShortDivision(i,g) {
+            // TODO: 动态计算并展示短除法。
+        }
+    </script>
+</head>
+<body>
+    <table width="75%">
+        <thead>
+            <caption>演示集锦</caption>
+            <tr>
+                <th width="25%">名称</th><th width="25%">数字</th><th>图解</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr unit="ShortDivision">
+                <td>十进制转二进制</td>
+                <td>
+                    <label>十进制</label><input type="text" name="d" value="9527" readonly=true source>
+                    <label>二进制</label><input type="text" name="b" value="10010100110111" readonly=true target>
+                </td>
+                <td graph>
+                    <div class="graph-container">
+                        <div class="graph-item" level="0" style="padding-left:0px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">9527</span>
+                            </span>
+                            <span class="ignore bit" style="text-align:right;color:white">0</span>
+                        </div>
+                        <div class="graph-item" level="1" style="padding-left:9px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">4763</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">1</span>
+                        </div>
+                        <div class="graph-item" level="2" style="padding-left:18px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">2381</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">1</span>
+                        </div>
+                        <div class="graph-item" level="3" style="padding-left:27px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">1190</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">1</span>
+                        </div>
+                        <div class="graph-item" level="4" style="padding-left:36px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">595</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">0</span>
+                        </div>
+                        <div class="graph-item" level="5" style="padding-left:45px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">297</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">1</span>
+                        </div>
+                        <div class="graph-item" level="6" style="padding-left:54px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">148</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">1</span>
+                        </div>
+                        <div class="graph-item" level="7" style="padding-left:63px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">74</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">0</span>
+                        </div>
+                        <div class="graph-item" level="8" style="padding-left:72px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">37</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">0</span>
+                        </div>
+                        <div class="graph-item" level="9" style="padding-left:81px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">18</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">1</span>
+                        </div>
+                        <div class="graph-item" level="10" style="padding-left:90px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">9</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">0</span>
+                        </div>
+                        <div class="graph-item" level="11" style="padding-left:99px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">4</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">1</span>
+                        </div>
+                        <div class="graph-item" level="12" style="padding-left:108px;">
+                            <span style="width:20%;text-align:right;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">2</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">0</span>
+                        </div>
+                        <div class="graph-item" level="13" style="padding-left:117px;">
+                            <span class="ignore" style="width:20%;text-align:right;color:white;">2</span>
+                            <span style="width:60%;text-align:left;">
+                                <span class="end" style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;border-color:white;">1</span>
+                            </span>
+                            <span class="bit" style="text-align:right;">0</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+</body>
+</html>

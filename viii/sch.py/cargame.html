@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name='keywords' content='那个秀才 SCH.PY'/>
+    <meta name='description' content='小车游戏带小白体验编程的乐趣'/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SCH.PY CarGame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body, table, thead, tbody, tfoot, tr, th, td {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .hcenter {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th {
+            height: 0px;
+        }
+        td {
+            border: 1px solid;
+            height: 22px;
+        }
+        label, input {
+            display: block;
+        }
+        .here {
+            background-color: salmon;
+        }
+        .pass {
+            background-color: green;
+        }
+        p {
+            text-align: left;
+            width: 35%;
+        }
+    </style>
+    <script>
+        var stage = undefined;
+        var cmd = undefined;
+        var h = 0;
+        var v = 0;
+        var cells = [];
+        function Initialize() {
+            stage = document.getElementById("stage");
+            cmd = document.getElementById("cmd");
+            var trs = stage.getElementsByTagName("tr");
+            for (var i=0; i<trs.length; i++) {
+                var tds = trs[i].getElementsByTagName("td");
+                cells.push(tds);
+            }
+            cells.reverse();
+        }
+        function Command() {
+            var x = h;
+            var y = v;
+            if (cmd.value == "LEFT") {x -= 1;}
+            else if (cmd.value == "RIGHT") {x += 1;}
+            else if (cmd.value == "UP") {y += 1;}
+            else if (cmd.value == "DOWN") {y -= 1;}
+            else {
+                alert("请下达可识别的命令！");
+                return;
+            }
+            if (x < 0) {alert("已经到最左边！");return;}
+            if (x > 9) {alert("已经到最右边！");return;}
+            if (y < 0) {alert("已经到最下边！");return;}
+            if (y > 9) {alert("已经到最上边！");return;}
+            cells[v][h].className = "pass";
+            cells[y][x].className = "here";
+            h = x;
+            v = y;
+        }
+    </script>
+</head>
+<body onload="Initialize();">
+    <div>
+        <table class="hcenter" width="45%">
+            <caption>小车游戏<br/>让小车从【左下角】行驶到【右上角】</caption>
+            <p class="hcenter">
+                LEFT：向左移动n个格子；<br/>
+                RIGHT：向右移动n个格子；<br/>
+                UP：向上移动n个格子；<br/>
+                DOWN：向下移动n个格子。<br/>
+            </p>
+            <hr/>
+            <thead>
+                <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            </thead>
+            <tbody id="stage">
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="pass"></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td class="here"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+            <tfoot></tfoot>
+        </table>
+    </div>
+    <div>
+        <hr/>
+        <label>请下命令</label>
+        <input id="cmd" class="hcenter" type="text">
+        <input class="hcenter" type="button" value="执行" onclick="Command();">
+    </div>
+</body>
+</html>

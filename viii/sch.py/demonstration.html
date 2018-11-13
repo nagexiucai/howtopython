@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name='keywords' content='那个秀才 SCH.PY'/>
-    <meta name='description' content='配套演示辅助'/>
+    <meta name='description' content='最简单算法的配套演示辅助'/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>SCH.PY Demonstration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,7 @@
         input {display: block;}
         p {margin: 0; padding: 0;}
         span {display: inline-block; margin: 0; padding: 0;}
+        table {margin-left: auto; margin-right: auto;}
 
         /* 视图 */
         .graph-container {width: 100%;}
@@ -90,8 +91,8 @@
 </head>
 <body onload="Initialize();">
     <table width="75%">
+        <caption>演示集锦</caption>
         <thead>
-            <caption>演示集锦</caption>
             <tr>
                 <th width="25%">名称</th><th width="25%">数字</th><th>图解</th>
             </tr>
@@ -100,7 +101,7 @@
             <tr class="unit" unitname="ShortDivision">
                 <td>十进制转二进制</td>
                 <td>
-                    <label>十进制</label><input type="text" name="d" value="9527" source>
+                    <label>十进制</label><input type="text" name="d" value="9527" source><!-- 仅接受自然数 -->
                     <label>二进制</label><input type="text" name="b" value="10010100110111" readonly=true style="color:blue;" target>
                 </td>
                 <td class="graph">

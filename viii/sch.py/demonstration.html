@@ -8,21 +8,87 @@
     <title>SCH.PY Demonstration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* 公共 */
         input {display: block;}
         p {margin: 0; padding: 0;}
         span {display: inline-block; margin: 0; padding: 0;}
+
+        /* 视图 */
         .graph-container {width: 100%;}
         .graph-item {width: 100%;}
-        .bit {color: blue;}
-        .end {color: red;}
+
+        /* 十进制转二进制 */
+        .quotient {padding-left: 9px; padding-right: 9px; border-left: 1px solid; border-bottom: 1px solid;}
+        .dividend {width: 60%; text-align: left;}
+        .divisor {width: 20%; text-align: right;}
+        .remainder {color: blue; text-align: right;}
+        .start {color: brown;}
+        .end {color: red; border-color: white;}
+        .ignore {color: white;}
     </style>
     <script>
-        function ShortDivision(i,g) {
-            // TODO: 动态计算并展示短除法。
+        var bindings = {
+            "ShortDivision": function(unit) {
+                var graph = unit.getElementsByClassName("graph")[0];
+                var inputs = unit.getElementsByTagName("input");
+                var result = undefined;
+                for(var i=0; i<inputs.length; i++) {
+                    var input = inputs[i];
+                    if (input.getAttribute("source") != null) {
+                        input.addEventListener("input", function(e) {
+                            graph.innerHTML = "";
+                            // START 算法
+                            var b = [];
+                            var d = e.target.value;
+                            if (!d) return;
+                            var steps = [{"d": d, "r": "!"}]; // 步骤记录
+                            while (d) {
+                                r = d%2;
+                                d = Math.floor(d/2);
+                                steps.push({
+                                    "d": d,
+                                    "r": r,
+                                });
+                                b.push(r);
+                            }
+                            b.reverse();
+                            // END 算法
+                            result.value = b.join("");
+                            for (var level=0; level<steps.length; level++) {
+                                var div = document.createElement("div");
+                                div.className = "graph-item";
+                                div.setAttribute("level", level);
+                                div.style = "padding-left:"+9*level+"px;";
+                                if (level==0) {
+                                    div.innerHTML = "<span class='divisor'>2</span><span class='dividend'><span class='quotient start'>" + steps[level].d + "</span></span>" + "<span class='remainder ignore'>" + steps[level].r + "</span>";
+                                }
+                                else if (level==steps.length-1) {
+                                    div.innerHTML = "<span class='divisor ignore'>2</span><span class='dividend'><span class='quotient end'>" + steps[level].d + "</span></span>" + "<span class='remainder'>" + steps[level].r + "</span>";
+                                }
+                                else {
+                                    div.innerHTML = "<span class='divisor'>2</span><span class='dividend'><span class='quotient'>" + steps[level].d + "</span></span>" + "<span class='remainder'>" + steps[level].r + "</span>";
+                                }
+                                graph.append(div);
+                            }
+                        });
+                    }
+                    if (input.getAttribute("target") != null) {
+                        result = input;
+                    }
+                }
+            },
+        };
+        function Initialize() {
+            var units = document.getElementsByClassName("unit");
+            for(var i=0; i<units.length; i++) {
+                var unit = units[i];
+                var unitname = unit.getAttribute("unitname");
+                bindings[unitname](unit);
+            }
         }
     </script>
 </head>
-<body>
+<body onload="Initialize();">
     <table width="75%">
         <thead>
             <caption>演示集锦</caption>
@@ -31,111 +97,118 @@
             </tr>
         </thead>
         <tbody>
-            <tr unit="ShortDivision">
+            <tr class="unit" unitname="ShortDivision">
                 <td>十进制转二进制</td>
                 <td>
-                    <label>十进制</label><input type="text" name="d" value="9527" readonly=true source>
-                    <label>二进制</label><input type="text" name="b" value="10010100110111" readonly=true target>
+                    <label>十进制</label><input type="text" name="d" value="9527" source>
+                    <label>二进制</label><input type="text" name="b" value="10010100110111" readonly=true style="color:blue;" target>
                 </td>
-                <td graph>
+                <td class="graph">
                     <div class="graph-container">
                         <div class="graph-item" level="0" style="padding-left:0px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">9527</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient start">9527</span>
                             </span>
-                            <span class="ignore bit" style="text-align:right;color:white">0</span>
+                            <span class="remainder ignore">!</span>
                         </div>
                         <div class="graph-item" level="1" style="padding-left:9px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">4763</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">4763</span>
                             </span>
-                            <span class="bit" style="text-align:right;">1</span>
+                            <span class="remainder">1</span>
                         </div>
                         <div class="graph-item" level="2" style="padding-left:18px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">2381</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">2381</span>
                             </span>
-                            <span class="bit" style="text-align:right;">1</span>
+                            <span class="remainder">1</span>
                         </div>
                         <div class="graph-item" level="3" style="padding-left:27px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">1190</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">1190</span>
                             </span>
-                            <span class="bit" style="text-align:right;">1</span>
+                            <span class="remainder">1</span>
                         </div>
                         <div class="graph-item" level="4" style="padding-left:36px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">595</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">595</span>
                             </span>
-                            <span class="bit" style="text-align:right;">0</span>
+                            <span class="remainder">0</span>
                         </div>
                         <div class="graph-item" level="5" style="padding-left:45px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">297</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">297</span>
                             </span>
-                            <span class="bit" style="text-align:right;">1</span>
+                            <span class="remainder">1</span>
                         </div>
                         <div class="graph-item" level="6" style="padding-left:54px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">148</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">148</span>
                             </span>
-                            <span class="bit" style="text-align:right;">1</span>
+                            <span class="remainder">1</span>
                         </div>
                         <div class="graph-item" level="7" style="padding-left:63px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">74</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">74</span>
                             </span>
-                            <span class="bit" style="text-align:right;">0</span>
+                            <span class="remainder">0</span>
                         </div>
                         <div class="graph-item" level="8" style="padding-left:72px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">37</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">37</span>
                             </span>
-                            <span class="bit" style="text-align:right;">0</span>
+                            <span class="remainder">0</span>
                         </div>
                         <div class="graph-item" level="9" style="padding-left:81px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">18</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">18</span>
                             </span>
-                            <span class="bit" style="text-align:right;">1</span>
+                            <span class="remainder">1</span>
                         </div>
                         <div class="graph-item" level="10" style="padding-left:90px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">9</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">9</span>
                             </span>
-                            <span class="bit" style="text-align:right;">0</span>
+                            <span class="remainder">0</span>
                         </div>
                         <div class="graph-item" level="11" style="padding-left:99px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">4</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">4</span>
                             </span>
-                            <span class="bit" style="text-align:right;">1</span>
+                            <span class="remainder">1</span>
                         </div>
                         <div class="graph-item" level="12" style="padding-left:108px;">
-                            <span style="width:20%;text-align:right;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;">2</span>
+                            <span class="divisor">2</span>
+                            <span class="dividend">
+                                <span class="quotient">2</span>
                             </span>
-                            <span class="bit" style="text-align:right;">0</span>
+                            <span class="remainder">0</span>
                         </div>
                         <div class="graph-item" level="13" style="padding-left:117px;">
-                            <span class="ignore" style="width:20%;text-align:right;color:white;">2</span>
-                            <span style="width:60%;text-align:left;">
-                                <span class="end" style="padding-left:9px;padding-right:9px;border-left:1px solid;border-bottom:1px solid;border-color:white;">1</span>
+                                <span class="divisor">2</span>
+                                <span class="dividend">
+                                    <span class="quotient">1</span>
+                                </span>
+                                <span class="remainder">0</span>
+                            </div>
+                        <div class="graph-item" level="14" style="padding-left:126px;">
+                            <span class="divisor ignore">2</span>
+                            <span class="dividend">
+                                <span class="quotient end">0</span>
                             </span>
-                            <span class="bit" style="text-align:right;">0</span>
+                            <span class="remainder">1</span>
                         </div>
                     </div>
                 </td>

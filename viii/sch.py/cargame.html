@@ -13,6 +13,9 @@
             padding: 0;
             text-align: center;
         }
+        caption {
+            background-color: aqua;
+        }
         .hcenter {
             margin-left: auto;
             margin-right: auto;
@@ -30,26 +33,50 @@
         .here {
             background-color: salmon;
         }
+        .goal {
+            background-color: blue;
+        }
         .pass {
             background-color: green;
         }
-        p {
-            text-align: left;
-            width: 35%;
+        .code {
+            width: 30%;
+            min-height: 11em;
+        }
+        .instruction {
+            width: 30%;
+        }
+        .title {
+            background-color: gold;
         }
     </style>
     <script>
-        var stage = undefined;
         var cmd = undefined;
-        var h = 0;
-        var v = 0;
-        var cells = [];
+        var code = undefined;
+        var h = undefined;
+        var v = undefined;
+        var cells = undefined;
         function Initialize() {
-            stage = document.getElementById("stage");
             cmd = document.getElementById("cmd");
+            code = document.getElementById("code");
+            h = 0;
+            v = 0;
+            cells = [];
+            var stage = document.getElementById("stage");
             var trs = stage.getElementsByTagName("tr");
             for (var i=0; i<trs.length; i++) {
                 var tds = trs[i].getElementsByTagName("td");
+                for (var j=0; j<tds.length; j++) {
+                    if (i == 0 && j == 9) {
+                        tds[j].className = "goal";
+                    }
+                    else if (i == 9 && j == 0) {
+                        tds[j].className = "here";
+                    }
+                    else {
+                        tds[j].className = "";
+                    }
+                }
                 cells.push(tds);
             }
             cells.reverse();
@@ -63,35 +90,54 @@
             else if (cmd.value == "DOWN") {y -= 1;}
             else {
                 alert("请下达可识别的命令！");
-                return;
+                return false;
             }
-            if (x < 0) {alert("已经到最左边！");return;}
-            if (x > 9) {alert("已经到最右边！");return;}
-            if (y < 0) {alert("已经到最下边！");return;}
-            if (y > 9) {alert("已经到最上边！");return;}
+            if (x < 0) {alert("已经到最左边！");return false;}
+            if (x > 9) {alert("已经到最右边！");return false;}
+            if (y < 0) {alert("已经到最下边！");return false;}
+            if (y > 9) {alert("已经到最上边！");return false;}
             cells[v][h].className = "pass";
             cells[y][x].className = "here";
             h = x;
             v = y;
+            return true;
+        }
+        function Script() {
+            var instructions = code.value.split("\n");
+            for (var i=0; i<instructions.length; i++) {
+                var order = instructions[i].trim();
+                cmd.value = order;
+                if (!Command()) {
+                    alert("第"+(i+1)+"步指令"+order+"非法!");
+                    break;
+                }
+            }
+            cmd.value = "";
         }
     </script>
 </head>
 <body onload="Initialize();">
     <div>
-        <table class="hcenter" width="45%">
+        <table class="hcenter" width="35%">
             <caption>小车游戏<br/>让小车从【左下角】行驶到【右上角】</caption>
-            <p class="hcenter">
-                LEFT：向左移动n个格子；<br/>
-                RIGHT：向右移动n个格子；<br/>
-                UP：向上移动n个格子；<br/>
-                DOWN：向下移动n个格子。<br/>
-            </p>
-            <hr/>
+            <tr class="title"><td>指令</td><td>含义</td></tr>
+            <tr><td class="instruction">LEFT</td><td>向左移动一个单元格子</td></tr>
+            <tr><td class="instruction">RIGHT</td><td>向右移动一个单元格子</td></tr>
+            <tr><td class="instruction">UP</td><td>向上移动一个单元格子</td></tr>
+            <tr><td class="instruction">DOWN</td><td>向下移动一个单元格子</td></tr>
+            <tr class="title"><td>颜色</td><td>含义</td></tr>
+            <tr><td class="here"></td><td>当前位置</td></tr>
+            <tr><td class="goal"></td><td>目标位置</td></tr>
+            <tr><td class="pass"></td><td>走过的路</td></tr>
+        </table>
+        <hr/>
+        <table class="hcenter" width="45%">
+            <caption>走出不一样的路</caption>
             <thead>
                 <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
             </thead>
             <tbody id="stage">
-                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="pass"></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="goal"></td></tr>
                 <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                 <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                 <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -104,12 +150,17 @@
             </tbody>
             <tfoot></tfoot>
         </table>
+        <input class="hcenter" type="button" value="复位" onclick="Initialize();">
     </div>
     <div>
         <hr/>
         <label>请下命令</label>
         <input id="cmd" class="hcenter" type="text">
-        <input class="hcenter" type="button" value="执行" onclick="Command();">
+        <input class="hcenter" type="button" value="执行命令" onclick="Command();">
+        <hr/>
+        <label>编辑脚本</label>
+        <textarea id="code" class="code hcenter"></textarea>
+        <input class="hcenter" type="button" value="执行脚本" onclick="Script();">
     </div>
 </body>
 </html>

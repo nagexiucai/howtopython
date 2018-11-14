@@ -39,6 +39,9 @@
         .pass {
             background-color: green;
         }
+        .hole {
+            background-color: black;
+        }
         .code {
             width: 30%;
             min-height: 11em;
@@ -56,6 +59,7 @@
         var h = undefined;
         var v = undefined;
         var cells = undefined;
+        var __holes = [{h:2,v:2},{h:3,v:7},{h:6,v:4}];
         function Initialize() {
             cmd = document.getElementById("cmd");
             code = document.getElementById("code");
@@ -80,6 +84,9 @@
                 cells.push(tds);
             }
             cells.reverse();
+            for (var k=0; k<__holes.length; k++) {
+                cells[__holes[k].v][__holes[k].h].className = "hole";
+            }
         }
         function Command() {
             var x = h;
@@ -96,6 +103,12 @@
             if (x > 9) {alert("已经到最右边！");return false;}
             if (y < 0) {alert("已经到最下边！");return false;}
             if (y > 9) {alert("已经到最上边！");return false;}
+            for (var i=0; i<__holes.length; i++) {
+                if (x == __holes[i].h && y == __holes[i].v) {
+                    alert("悬崖勒马、回头是岸！");
+                    return false;
+                }
+            }
             cells[v][h].className = "pass";
             cells[y][x].className = "here";
             h = x;
@@ -129,6 +142,7 @@
             <tr><td class="here"></td><td>当前位置</td></tr>
             <tr><td class="goal"></td><td>目标位置</td></tr>
             <tr><td class="pass"></td><td>走过的路</td></tr>
+            <tr><td class="hole"></td><td>无底黑洞</td></tr>
         </table>
         <hr/>
         <table class="hcenter" width="45%">

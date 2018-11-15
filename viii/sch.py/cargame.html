@@ -52,10 +52,16 @@
         .title {
             background-color: gold;
         }
+        .algorithm {
+            width: 40%;
+            text-align: left;
+        }
     </style>
+    <script src="./cargame.js"></script>
     <script>
         var cmd = undefined;
         var code = undefined;
+        var algorithm = undefined;
         var h = undefined;
         var v = undefined;
         var cells = undefined;
@@ -63,6 +69,7 @@
         function Initialize() {
             cmd = document.getElementById("cmd");
             code = document.getElementById("code");
+            algorithm = document.getElementById("algorithm");
             h = 0;
             v = 0;
             cells = [];
@@ -163,6 +170,9 @@
             }
             cmd.value = "";
         }
+        function Algorithm() {
+            var ast = SyntaxPaser(algorithm.innerText);
+        }
     </script>
 </head>
 <body onload="Initialize();">
@@ -211,6 +221,54 @@
         <label>编辑脚本</label>
         <textarea id="code" class="code hcenter"></textarea>
         <input class="hcenter" type="button" value="执行脚本" onclick="Script();">
+    </div>
+    <hr/>
+    <div class="algorithm hcenter">
+        <pre>
+            <code id="algorithm">
+REVOLVE {
+    IF IsEnd() {
+        SHUT;
+    }
+    IF NOT IsHole(left) AND NOT IsWall(left) {
+        LEFT;
+    }
+    ELSE {
+        Echo(第);
+        Echo($(__count__));
+        Echo(步的左边不能走);
+
+        IF NOT IsHole(right) AND NOT IsWall(right) {
+            RIGHT;
+        }
+        ELSE {
+            Echo(第);
+            Echo($(__count__));
+            Echo(步的右边不能走);
+
+            IF NOT IsHole(up) AND NOT IsWall(up) {
+                UP;
+            }
+            ELSE {
+                Echo(第);
+                Echo($(__count__));
+                Echo(步的上边不能走);
+
+                IF NOT IsHole(down) AND NOT IsWall(down) {
+                    DOWN;
+                }
+                ELSE {
+                    Echo(第);
+                    Echo($(__count__));
+                    Echo(步的下边不能走);
+                }
+            }
+        }
+    }
+}
+            </code>
+        </pre>
+        <input class="hcenter" type="button" value="执行算法" onclick="Algorithm();">
     </div>
 </body>
 </html>

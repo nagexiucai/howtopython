@@ -95,6 +95,42 @@
             else if (cmd.value == "RIGHT") {x += 1;}
             else if (cmd.value == "UP") {y += 1;}
             else if (cmd.value == "DOWN") {y -= 1;}
+            else if (cmd.value.startsWith("REPEAT")) {
+                var words = cmd.value.split(" ");
+                var mark = undefined;
+                var order = undefined;
+                var n = undefined;
+                for (var i=0; i<words.length; i++) {
+                    if (!words[i]) continue;
+                    if (i == 0) mark = words[i];
+                    else if (i == 1) order = words[i];
+                    else if (i == 2) n = words[i];
+                    else {
+                        alert("格式必须是“REPEAT 命令 N”！");
+                        return false;
+                    }
+                }
+                if (mark && order && n) {
+                    n = parseInt(n);
+                    if (n == NaN) {
+                        alert("在“REPEAT 命令 N”中的“N”应当是自然数！");
+                        return false;
+                    }
+                    cmd.value = order;
+                    for (var i=0; i<n; i++) {
+                        if (!Command()) {
+                            alert("命令“"+mark+" "+order+" "+n+"”越界！");
+                            return false;
+                        }
+                    }
+                    cmd.value = mark + " " + order + " " + n;
+                    return true;
+                }
+                else {
+                    alert("格式必须是“REPEAT 命令 N”！");
+                    return false;
+                }
+            }
             else {
                 alert("请下达可识别的命令！");
                 return false;
@@ -170,7 +206,7 @@
         <hr/>
         <label>请下命令</label>
         <input id="cmd" class="hcenter" type="text">
-        <input class="hcenter" type="button" value="执行命令" onclick="Command();">
+        <input class="hcenter" type="button" value="执行指令" onclick="Command();">
         <hr/>
         <label>编辑脚本</label>
         <textarea id="code" class="code hcenter"></textarea>

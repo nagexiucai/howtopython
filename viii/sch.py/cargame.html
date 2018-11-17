@@ -226,49 +226,80 @@
     <div class="algorithm hcenter">
         <pre>
             <code id="algorithm">
-REVOLVE {
-    IF IsEnd() {
-        SHUT;
-    }
-    IF NOT IsHole(left) AND NOT IsWall(left) {
-        LEFT;
-    }
-    ELSE {
-        Echo(第);
-        Echo($(__count__));
-        Echo(步的左边不能走);
+                REVOLVE {
 
-        IF NOT IsHole(right) AND NOT IsWall(right) {
-            RIGHT;
-        }
-        ELSE {
-            Echo(第);
-            Echo($(__count__));
-            Echo(步的右边不能走);
+                    IF IsEnd() {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步到站停车);
 
-            IF NOT IsHole(up) AND NOT IsWall(up) {
-                UP;
-            }
-            ELSE {
-                Echo(第);
-                Echo($(__count__));
-                Echo(步的上边不能走);
+                        SHUT;
+                    }
 
-                IF NOT IsHole(down) AND NOT IsWall(down) {
-                    DOWN;
+                    IF IsHole(left) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【左边】是【黑洞】，不能走。);
+                    }
+                    ELSEIF IsWall(left) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【左边】是【围墙】，不能走。);
+                    }
+                    ELSE {
+                        LEFT;
+                        GOON;
+                    }
                 }
-                ELSE {
-                    Echo(第);
-                    Echo($(__count__));
-                    Echo(步的下边不能走);
-                }
-            }
-        }
-    }
-}
             </code>
         </pre>
         <input class="hcenter" type="button" value="执行算法" onclick="Algorithm();">
     </div>
 </body>
 </html>
+<!--
+IF IsHole(right) {
+    Echo(第【);
+    Echo($(__count__));
+    Echo(】步的【右边】是【黑洞】，不能走。);
+}
+ELSEIF IsWall(right) {
+    Echo(第【);
+    Echo($(__count__));
+    Echo(】步的【右边】是【围墙】，不能走。);
+}
+ELSE {
+    RIGHT;
+    GOON;
+}
+
+IF IsHole(up) {
+    Echo(第【);
+    Echo($(__count__));
+    Echo(】步的【上边】是【黑洞】，不能走。);
+}
+ELSEIF IsWall(up) {
+    Echo(第【);
+    Echo($(__count__));
+    Echo(】步的【上边】是【围墙】，不能走。);
+}
+ELSE {
+    UP;
+    GOON;
+}
+
+IF IsHole(down) {
+    Echo(第【);
+    Echo($(__count__));
+    Echo(】步的【下边】是【黑洞】，不能走。);
+}
+ELSEIF IsWall(down) {
+    Echo(第【);
+    Echo($(__count__));
+    Echo(】步的【下边】是【围墙】，不能走。);
+}
+ELSE {
+    DOWN;
+    GOON;
+} 
+->

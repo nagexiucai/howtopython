@@ -2,6 +2,7 @@ function SyntaxPaser(text) {
     var code = text || "";
     function operation() {
         return {
+            "__version__": "0.0.1",
             "name": undefined,
             "type": undefined,
             "parameters": [],
@@ -158,5 +159,75 @@ function SyntaxPaser(text) {
             identifier = "";
         }
     }
-    return true;
+    return ast;
+}
+
+function CarVM() {
+    return {
+        __version__: "0.0.1",
+        __count__: 0,
+        __cache__: {},
+        __thelast__: undefined,
+        interpret: function(ast) {
+            if (ast.type == "module") {
+                this.namespace = this.__cache__[ast.name] = {};
+            }
+            else if (ast.type == "command") {
+                if (ast.name == "LEFT") {
+                    console.log("LEFT");
+                }
+                else if (ast.name == "RIGHT") {
+                    console.log("RIGHT");
+                }
+                else if (ast.name == "UP") {
+                    console.log("UP");
+                }
+                else if (ast.name == "DOWN") {
+                    console.log("DOWN");
+                }
+                else if (ast.name == "SHUT") {
+                    return null;
+                }
+                else {
+                    alert("不支持的指令："+ast.name+"！");
+                    return undefined;
+                }
+            }
+            else if (ast.type == "goon") {
+                return false;
+            }
+            else if (ast.type == "revolve") {
+                while (true) {
+                    for (var i=0; i<ast.inner.length; i++) {
+                        var how = this.interpret(ast.inner[i]);
+                        if (how == true) continue;
+                        else if (how == false) break;
+                        else if (how == null) return null;
+                        else if (how == undefined) return undefined;
+                        else return false;
+                    }
+                }
+            }
+            else if (ast.type == "function") {
+                // 函数调用
+            }
+            else if (ast.type == "if") {
+                // 条件判断
+                // 真则递归
+                // 假则返回
+            }
+            else if (ast.type == "elseif") {}
+            else if (ast.type == "else") {}
+            else {}
+            for (var i=0; i<ast.inner.length; i++) {
+                var how = this.interpret(ast.inner[i]);
+                if (how == true) continue;
+                else if (how == false) break;
+                else if (how == null) return null;
+                else if (how == undefined) return undefined;
+                else return false;
+            }
+            return true;
+        }
+    };
 }

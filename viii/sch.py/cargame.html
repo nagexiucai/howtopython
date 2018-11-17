@@ -172,6 +172,8 @@
         }
         function Algorithm() {
             var ast = SyntaxPaser(algorithm.innerText);
+            var cvm = CarVM();
+            cvm.interpret(ast);
         }
     </script>
 </head>
@@ -250,6 +252,51 @@
                         LEFT;
                         GOON;
                     }
+
+                    IF IsHole(right) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【右边】是【黑洞】，不能走。);
+                    }
+                    ELSEIF IsWall(right) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【右边】是【围墙】，不能走。);
+                    }
+                    ELSE {
+                        RIGHT;
+                        GOON;
+                    }
+
+                    IF IsHole(up) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【上边】是【黑洞】，不能走。);
+                    }
+                    ELSEIF IsWall(up) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【上边】是【围墙】，不能走。);
+                    }
+                    ELSE {
+                        UP;
+                        GOON;
+                    }
+
+                    IF IsHole(down) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【下边】是【黑洞】，不能走。);
+                    }
+                    ELSEIF IsWall(down) {
+                        Echo(第【);
+                        Echo($(__count__));
+                        Echo(】步的【下边】是【围墙】，不能走。);
+                    }
+                    ELSE {
+                        DOWN;
+                        GOON;
+                    }
                 }
             </code>
         </pre>
@@ -257,49 +304,3 @@
     </div>
 </body>
 </html>
-<!--
-IF IsHole(right) {
-    Echo(第【);
-    Echo($(__count__));
-    Echo(】步的【右边】是【黑洞】，不能走。);
-}
-ELSEIF IsWall(right) {
-    Echo(第【);
-    Echo($(__count__));
-    Echo(】步的【右边】是【围墙】，不能走。);
-}
-ELSE {
-    RIGHT;
-    GOON;
-}
-
-IF IsHole(up) {
-    Echo(第【);
-    Echo($(__count__));
-    Echo(】步的【上边】是【黑洞】，不能走。);
-}
-ELSEIF IsWall(up) {
-    Echo(第【);
-    Echo($(__count__));
-    Echo(】步的【上边】是【围墙】，不能走。);
-}
-ELSE {
-    UP;
-    GOON;
-}
-
-IF IsHole(down) {
-    Echo(第【);
-    Echo($(__count__));
-    Echo(】步的【下边】是【黑洞】，不能走。);
-}
-ELSEIF IsWall(down) {
-    Echo(第【);
-    Echo($(__count__));
-    Echo(】步的【下边】是【围墙】，不能走。);
-}
-ELSE {
-    DOWN;
-    GOON;
-} 
-->

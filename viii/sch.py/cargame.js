@@ -5,6 +5,7 @@ function SyntaxPaser(text) {
             "__version__": "0.0.1",
             "name": undefined,
             "type": undefined,
+            "level": undefined,
             "parameters": [],
             "inner": [],
             "outer": undefined
@@ -59,6 +60,7 @@ function SyntaxPaser(text) {
             var o = operation();
             o.name = identifier;
             o.type = status;
+            o.level = level;
             identifier = "";
             cursor.inner.push(o);
             o.outer = cursor;
@@ -90,6 +92,7 @@ function SyntaxPaser(text) {
                 var o = operation();
                 o.name = identifier;
                 o.type = status;
+                o.level = level;
                 cursor.inner.push(o);
                 o.outer = cursor;
                 cursor = o;
@@ -101,6 +104,7 @@ function SyntaxPaser(text) {
                 var o = operation();
                 o.name = identifier;
                 o.type = status;
+                o.level = level;
                 cursor.inner.push(o);
                 o.outer = cursor;
                 // 最内层
@@ -111,6 +115,7 @@ function SyntaxPaser(text) {
                 var o = operation();
                 o.name = identifier;
                 o.type = status;
+                o.level = level;
                 cursor.inner.push(o);
                 o.outer = cursor;
                 cursor = o;
@@ -122,6 +127,7 @@ function SyntaxPaser(text) {
                 var o = operation();
                 o.name = identifier;
                 o.type = status;
+                o.level = level;
                 cursor.inner.push(o);
                 o.outer = cursor;
                 cursor = o;
@@ -133,6 +139,7 @@ function SyntaxPaser(text) {
                 var o = operation();
                 o.name = identifier;
                 o.type = status;
+                o.level = level;
                 cursor.inner.push(o);
                 o.outer = cursor;
                 cursor = o;
@@ -144,6 +151,7 @@ function SyntaxPaser(text) {
                 var o = operation();
                 o.name = identifier;
                 o.type = status;
+                o.level = level;
                 cursor.inner.push(o);
                 o.outer = cursor;
                 // 最内层
@@ -166,24 +174,26 @@ function CarVM() {
     return {
         __version__: "0.0.1",
         __count__: 0,
-        __cache__: {},
-        __thelast__: undefined,
+        __trace__: [],
+        __thelast__: {},
         interpret: function(ast) {
-            if (ast.type == "module") {
-                this.namespace = this.__cache__[ast.name] = {};
-            }
+            if (ast.type == "module") { /* 命名空间 */ }
             else if (ast.type == "command") {
                 if (ast.name == "LEFT") {
                     console.log("LEFT");
+                    return true;
                 }
                 else if (ast.name == "RIGHT") {
                     console.log("RIGHT");
+                    return true;
                 }
                 else if (ast.name == "UP") {
                     console.log("UP");
+                    return true;
                 }
                 else if (ast.name == "DOWN") {
                     console.log("DOWN");
+                    return true;
                 }
                 else if (ast.name == "SHUT") {
                     return null;
@@ -194,40 +204,77 @@ function CarVM() {
                 }
             }
             else if (ast.type == "goon") {
-                return false;
+                return "revolve"; // 找最近的REVOLVE标识
             }
             else if (ast.type == "revolve") {
-                while (true) {
-                    for (var i=0; i<ast.inner.length; i++) {
-                        var how = this.interpret(ast.inner[i]);
-                        if (how == true) continue;
-                        else if (how == false) break;
-                        else if (how == null) return null;
-                        else if (how == undefined) return undefined;
-                        else return false;
-                    }
+                var i = 0;
+                while (i<ast.inner.length) {
+                    var how = this.interpret(ast.inner[i]);
+                    i += 1;
+                    if (how == null) return null;
+                    if (how == undefined) return undefined;
                 }
             }
             else if (ast.type == "function") {
                 // 函数调用
+                console.log(ast.name+"("+ast.parameters.toString()+")");
+                // 嵌套
+                return true;
             }
             else if (ast.type == "if") {
-                // 条件判断
-                // 真则递归
-                // 假则返回
+                // 条件判断：真则递归、假则返回。
+                if (ast.parameters) {
+                    if (this.interpret(ast.parameters[0])) {
+                        this.__thelast__[ast.level] = true;
+                        // 交给兜底处理
+                    }
+                    else {
+                        this.__thelast__[ast.level] = false;
+                        return false; // 分支不符
+                    }
+                }
+                else {
+                    alert("不支持的语法：IF {...}！");
+                    return undefined;
+                }
             }
-            else if (ast.type == "elseif") {}
-            else if (ast.type == "else") {}
-            else {}
+            else if (ast.type == "elseif") {
+                // 上次判断结果：真则按兵不动、假则条件判断。
+                if (this.__thelast__[ast.level] == undefined || this.__thelast__[ast.level]) {
+                    return false; // 跳过
+                }
+                else {
+                    if (ast.parameters) {
+                        if (this.interpret(ast.parameters[0])) {
+                            this.__thelast__[ast.level] = true;
+                            // 交给兜底处理
+                        }
+                        else {
+                            this.__thelast__[ast.level] = false;
+                            return false; // 分支不符
+                        }
+                    }
+                    else {
+                        alert("不支持的语法：IF {...}！");
+                        return undefined;
+                    }
+                }
+            }
+            else if (ast.type == "else") {
+                // 交给兜底处理
+            }
+            else {
+                alert("不支持的操作："+ast.type+"！");
+                return undefined;
+            }
+            // 兜底
             for (var i=0; i<ast.inner.length; i++) {
                 var how = this.interpret(ast.inner[i]);
-                if (how == true) continue;
-                else if (how == false) break;
-                else if (how == null) return null;
-                else if (how == undefined) return undefined;
-                else return false;
+                if (how == "revolve") return how; // 溯源
+                if (how == null) return null;
+                if (how == undefined) return undefined;
             }
-            return true;
+            return true; // 分支复合并已执行
         }
     };
 }

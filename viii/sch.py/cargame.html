@@ -94,6 +94,7 @@
             for (var k=0; k<__holes.length; k++) {
                 cells[__holes[k].v][__holes[k].h].className = "hole";
             }
+            return true;
         }
         function Command() {
             var x = h;
@@ -169,11 +170,12 @@
                 }
             }
             cmd.value = "";
+            return true;
         }
         function Algorithm() {
             var ast = SyntaxPaser(algorithm.innerText);
             var cvm = CarVM();
-            cvm.interpret(ast);
+            return cvm.interpret(ast);
         }
     </script>
 </head>

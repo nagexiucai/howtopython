@@ -176,6 +176,15 @@ function CarVM() {
         __count__: 0,
         __trace__: [],
         __thelast__: {},
+        IsHole: function(side) {},
+        IsWall: function(side) {},
+        IsEnd: function() {},
+        Echo: function(message) {},
+        LEFT: function() {},
+        RIGHT: function() {},
+        UP: function() {},
+        DOWN: function() {},
+        $: function(what) {},
         interpret: function(ast) {
             if (ast.type == "module") { /* 命名空间 */ }
             else if (ast.type == "command") {
@@ -211,6 +220,11 @@ function CarVM() {
                 while (i<ast.inner.length) {
                     var how = this.interpret(ast.inner[i]);
                     i += 1;
+                    if (how == "revolve") {
+                        i = 0;
+                        return "fuck";
+                        // continue; // 破除独占
+                    }
                     if (how == null) return null;
                     if (how == undefined) return undefined;
                 }
@@ -219,7 +233,7 @@ function CarVM() {
                 // 函数调用
                 console.log(ast.name+"("+ast.parameters.toString()+")");
                 // 嵌套
-                return true;
+                return false;
             }
             else if (ast.type == "if") {
                 // 条件判断：真则递归、假则返回。

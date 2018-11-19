@@ -173,36 +173,36 @@ function SyntaxPaser(text) {
 function CarVM() {
     return {
         __version__: "0.0.1",
-        __count__: 0,
+        __count__: 0, // XXX: 非公变量。
         __trace__: [],
         __thelast__: {},
-        IsHole: function(side) {},
-        IsWall: function(side) {},
-        IsEnd: function() {},
-        Echo: function(message) {},
-        LEFT: function() {},
-        RIGHT: function() {},
-        UP: function() {},
-        DOWN: function() {},
-        $: function(what) {},
+        IsHole: function(side) { console.log("请实现黑洞判断函数！"); },
+        IsWall: function(side) { console.log("请实现围墙判断函数！"); },
+        IsEnd: function() { console.log("请实现终点判断函数！"); },
+        Echo: function(message) { console.log(message); },
+        LEFT: function() { console.log("请实现向左移动命令！"); },
+        RIGHT: function() { console.log("请实现向右移动命令！"); },
+        UP: function() { console.log("请实现向上移动命令！"); },
+        DOWN: function() { console.log("请实现向下移动命令！"); },
+        $: function(what) { if (this.hasOwnProperty(what)) { return this[what]; } else { alert("未定义的变量"+what+"！"); return undefined; } },
         interpret: function(ast) {
             if (ast.type == "module") { /* 命名空间 */ }
             else if (ast.type == "command") {
                 if (ast.name == "LEFT") {
-                    console.log("LEFT");
-                    return true;
+                    this.__count__ += 1;
+                    return this.LEFT();
                 }
                 else if (ast.name == "RIGHT") {
-                    console.log("RIGHT");
-                    return true;
+                    this.__count__ += 1;
+                    return this.RIGHT();
                 }
                 else if (ast.name == "UP") {
-                    console.log("UP");
-                    return true;
+                    this.__count__ += 1;
+                    return this.UP();
                 }
                 else if (ast.name == "DOWN") {
-                    console.log("DOWN");
-                    return true;
+                    this.__count__ += 1;
+                    return this.DOWN();
                 }
                 else if (ast.name == "SHUT") {
                     return null;
@@ -222,8 +222,8 @@ function CarVM() {
                     i += 1;
                     if (how == "revolve") {
                         i = 0;
-                        return "fuck";
-                        // continue; // 破除独占
+                        if (confirm("继续？")) { continue; } // TODO: 破除独占，须要重新设计VM执行帧链。
+                        else { return null; }
                     }
                     if (how == null) return null;
                     if (how == undefined) return undefined;
@@ -231,9 +231,37 @@ function CarVM() {
             }
             else if (ast.type == "function") {
                 // 函数调用
-                console.log(ast.name+"("+ast.parameters.toString()+")");
+                // console.log(ast.name+"("+ast.parameters.toString()+")");
                 // 嵌套
-                return false;
+                if (ast.inner.length) {
+                    for (var i=0; i<ast.inner.length; i++) {
+                        var inner = this.interpret(ast.inner[i]);
+                        if (inner == undefined) return undefined;
+                        ast.parameters.push(inner);
+                    }
+                }
+                switch (ast.name) {
+                    case "Echo": {
+                        this.Echo(ast.parameters[0]);
+                        return true;
+                    }
+                    case "IsHole": {
+                        return this.IsHole(ast.parameters[0]);
+                    }
+                    case "IsWall": {
+                        return this.IsWall(ast.parameters[0]);
+                    }
+                    case "IsEnd": {
+                        return this.IsEnd();
+                    }
+                    case "$": {
+                        return this.$(ast.parameters[0]);
+                    }
+                    default: {
+                        alert("未定义的函数："+ast.name+"！");
+                        return undefined;
+                    }
+                }
             }
             else if (ast.type == "if") {
                 // 条件判断：真则递归、假则返回。
@@ -275,6 +303,10 @@ function CarVM() {
                 }
             }
             else if (ast.type == "else") {
+                // 之前判断结果：真则按兵不动、假则兜底。
+                if (this.__thelast__[ast.level] == undefined || this.__thelast__[ast.level]) {
+                    return false; // 跳过
+                }
                 // 交给兜底处理
             }
             else {

@@ -172,9 +172,75 @@
             cmd.value = "";
             return true;
         }
+        // 上述Command函数中已经包含了黑洞和围墙的判断逻辑，这里分别抽取为单独函数。
+        function IsHole(side) {
+            var x = h;
+            var y = v;
+            if (side == "left") {x -= 1;}
+            else if (side == "right") {x += 1;}
+            else if (side == "up") {y += 1;}
+            else if (side == "down") {y -= 1;}
+            else {
+                alert("函数IsHole的非法参数："+side+"！");
+                return undefined;
+            }
+            for (var i=0; i<__holes.length; i++) {
+                if (x == __holes[i].h && y == __holes[i].v) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        function IsWall(side) {
+            if (side == "left") {
+                return (h - 1) < 0;
+            }
+            else if (side == "right") {
+                return (h + 1) > 9;
+            }
+            else if (side == "down") {
+                return (v - 1) < 0;
+            }
+            else if (side == "up") {
+                return (v + 1) > 9;
+            }
+            else {
+                alert("函数IsWall的非法参数："+side+"！");
+                return undefined;
+            }
+        }
+        // 终点是围墙的特例，新增该函数。
+        function IsEnd() {
+            if (h == 9 && v == 9) return true;
+            else return false;
+        }
+        // 基本命令直接调用Comand函数（其中黑洞和围墙判断逻辑已经冗余且忽略“REPEAT 指令 N”语法。
+        function LEFT() {
+            cmd.value = "LEFT";
+            return Command();
+        }
+        function RIGHT() {
+            cmd.value = "RIGHT";
+            return Command();
+        }
+        function UP() {
+            cmd.value = "UP";
+            return Command();
+        }
+        function DOWN() {
+            cmd.value = "DOWN";
+            return Command();
+        }
         function Algorithm() {
             var ast = SyntaxPaser(algorithm.innerText);
             var cvm = CarVM();
+            cvm.IsHole = IsHole;
+            cvm.IsWall = IsWall;
+            cvm.IsEnd = IsEnd;
+            cvm.LEFT = LEFT;
+            cvm.RIGHT = RIGHT;
+            cvm.UP = UP;
+            cvm.DOWN = DOWN;
             return cvm.interpret(ast);
         }
     </script>

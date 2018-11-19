@@ -173,7 +173,7 @@ function SyntaxPaser(text) {
 function CarVM() {
     return {
         __version__: "0.0.1",
-        __count__: 0, // XXX: 非公变量。
+        __count__: [0],
         __trace__: [],
         __thelast__: {},
         IsHole: function(side) { console.log("请实现黑洞判断函数！"); },
@@ -184,24 +184,32 @@ function CarVM() {
         RIGHT: function() { console.log("请实现向右移动命令！"); },
         UP: function() { console.log("请实现向上移动命令！"); },
         DOWN: function() { console.log("请实现向下移动命令！"); },
-        $: function(what) { if (this.hasOwnProperty(what)) { return this[what]; } else { alert("未定义的变量"+what+"！"); return undefined; } },
+        $: function(what) {
+            if (this.hasOwnProperty(what)) {
+                 return this[what];
+            }
+            else {
+                alert("未定义的变量"+what+"！");
+                return undefined;
+            }
+        },
         interpret: function(ast) {
             if (ast.type == "module") { /* 命名空间 */ }
             else if (ast.type == "command") {
                 if (ast.name == "LEFT") {
-                    this.__count__ += 1;
+                    this.__count__[0] += 1;
                     return this.LEFT();
                 }
                 else if (ast.name == "RIGHT") {
-                    this.__count__ += 1;
+                    this.__count__[0] += 1;
                     return this.RIGHT();
                 }
                 else if (ast.name == "UP") {
-                    this.__count__ += 1;
+                    this.__count__[0] += 1;
                     return this.UP();
                 }
                 else if (ast.name == "DOWN") {
-                    this.__count__ += 1;
+                    this.__count__[0] += 1;
                     return this.DOWN();
                 }
                 else if (ast.name == "SHUT") {
@@ -222,8 +230,10 @@ function CarVM() {
                     i += 1;
                     if (how == "revolve") {
                         i = 0;
-                        if (confirm("继续？")) { continue; } // TODO: 破除独占，须要重新设计VM执行帧链。
-                        else { return null; }
+                        if (this.__count__[0] > 99) { alert("已经百步、未到终点！"); return null; } // XXX: 百步必达。
+                        else continue;
+                        // if (confirm("继续？")) { continue; } // TODO: 破除独占，须要重新设计VM执行帧链。
+                        // else { return null; }
                     }
                     if (how == null) return null;
                     if (how == undefined) return undefined;

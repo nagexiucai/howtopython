@@ -56,6 +56,15 @@
             width: 40%;
             text-align: left;
         }
+        label {
+            font-size: large;
+        }
+        .note {
+            font-size: smaller;
+            margin: 0;
+            padding: 0;
+            color: red;
+        }
     </style>
     <script src="./cargame.js"></script>
     <script>
@@ -247,13 +256,14 @@
 </head>
 <body onload="Initialize();">
     <div>
-        <table class="hcenter" width="35%">
+        <table class="hcenter" width="45%">
             <caption>小车游戏<br/>让小车从【左下角】行驶到【右上角】</caption>
-            <tr class="title"><td>指令</td><td>含义</td></tr>
+            <tr class="title"><td>基本指令</td><td>含义</td></tr>
             <tr><td class="instruction">LEFT</td><td>向左移动一个单元格子</td></tr>
             <tr><td class="instruction">RIGHT</td><td>向右移动一个单元格子</td></tr>
             <tr><td class="instruction">UP</td><td>向上移动一个单元格子</td></tr>
             <tr><td class="instruction">DOWN</td><td>向下移动一个单元格子</td></tr>
+            <tr><td class="instruction">REPEAT CMD N</td><td>将指令CMD重复N次（CMD是上述四个指令之一）</td></tr>
             <tr class="title"><td>颜色</td><td>含义</td></tr>
             <tr><td class="here"></td><td>当前位置</td></tr>
             <tr><td class="goal"></td><td>目标位置</td></tr>
@@ -285,14 +295,30 @@
     <div>
         <hr/>
         <label>请下命令</label>
+        <p class="note">单行指令</p>
         <input id="cmd" class="hcenter" type="text">
         <input class="hcenter" type="button" value="执行指令" onclick="Command();">
         <hr/>
         <label>编辑脚本</label>
+        <p class="note">多行指令</p>
         <textarea id="code" class="code hcenter"></textarea>
         <input class="hcenter" type="button" value="执行脚本" onclick="Script();">
     </div>
     <hr/>
+    <label>编程语言</label>
+    <table class="hcenter" width="45%">
+        <tr class="title"><td>关键字</td><td>含义</td></tr>
+        <tr><td class="instruction">REVOLVE</td><td>循环</td></tr>
+        <tr><td class="instruction">SHUT</td><td>停车</td></tr>
+        <tr><td class="instruction">IF</td><td>如果</td></tr>
+        <tr><td class="instruction">ELSEIF</td><td>又如果</td></tr>
+        <tr><td class="instruction">ELSE</td><td>其余</td></tr>
+        <tr><td class="instruction">IsEnd</td><td>终点否</td></tr>
+        <tr><td class="instruction">IsHole</td><td>黑洞否</td></tr>
+        <tr><td class="instruction">IsWall</td><td>围墙否</td></tr>
+        <tr><td class="instruction">Echo</td><td>日志</td></tr>
+    </table>
+    <p class="note">理解下述代码的含义并思考存在什么问题</p>
     <div class="algorithm hcenter">
         <pre>
             <code id="algorithm">

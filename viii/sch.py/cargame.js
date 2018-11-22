@@ -1,8 +1,13 @@
+/**
+ * @author: nagexiucai
+ * @github: https://github.com/nagexiucai/howtopython/blob/master/viii/sch.py
+ */
 function SyntaxPaser(text) {
     var code = text || "";
     function operation() {
         return {
             "__version__": "0.0.1",
+            "__author__": "me@nagexiucai.com",
             "name": undefined,
             "type": undefined,
             "level": undefined,
@@ -173,6 +178,7 @@ function SyntaxPaser(text) {
 function CarVM() {
     return {
         __version__: "0.0.1",
+        __author__: "me@nagexiucai.com",
         __count__: [0],
         __trace__: [],
         __thelast__: {},

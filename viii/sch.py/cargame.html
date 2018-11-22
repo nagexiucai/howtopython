@@ -62,7 +62,7 @@
         }
         #algorithm {
             width: 98%;
-            height: 20em;
+            height: 21em;
             resize: none;
         }
         label {
@@ -73,6 +73,9 @@
             margin: 0;
             padding: 0;
             color: red;
+        }
+        .zone {
+            padding: 1px;
         }
     </style>
     <script src="./cargame.js"></script>
@@ -271,7 +274,7 @@
     <td width="40%">
     <div class="zone">
         <table class="hcenter" width="90%">
-            <caption>小车游戏<br/>让小车从【左下角】行驶到【右上角】</caption>
+            <caption>小车游戏：让小车从【左下角】行驶到【右上角】。</caption>
             <tr class="title"><td>基本指令</td><td>含义</td></tr>
             <tr><td class="instruction">LEFT</td><td>向左移动一个单元格子</td></tr>
             <tr><td class="instruction">RIGHT</td><td>向右移动一个单元格子</td></tr>
@@ -315,7 +318,6 @@
         <p class="note">单行指令</p>
         <input id="cmd" class="hcenter" type="text">
         <input class="hcenter" type="button" value="执行指令" onclick="Command();">
-        <input class="hcenter" type="button" value="复位" onclick="Initialize();">
         <hr/>
         <label>编辑脚本</label>
         <p class="note">多行指令</p>
@@ -338,6 +340,7 @@
             <tr><td class="instruction">IsEnd</td><td>终点否</td></tr>
             <tr><td class="instruction">IsHole</td><td>黑洞否</td></tr>
             <tr><td class="instruction">IsWall</td><td>围墙否</td></tr>
+            <tr><td class="instruction">$(__count__)</td><td>步骤计数</td></tr>
             <tr><td class="instruction">Echo</td><td>日志</td></tr>
         </table>
     </div>
@@ -422,6 +425,7 @@ REVOLVE {
     </div>
     </td>
     <td>
+        <input class="hcenter" type="button" value="复位" onclick="Initialize();">
         <input class="hcenter" type="button" value="执行算法" onclick="Algorithm();">
     </td>
     </tr>

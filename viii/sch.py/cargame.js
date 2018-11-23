@@ -41,7 +41,7 @@ function SyntaxPaser(text) {
             // 开始子过程
             level += 1;
             // 用SYNTAX CLAUSE {标记开始的压栈（在具体语法标志处）
-            if (status.endsWith("if")) {
+            if (status.match("if$")) { // Fuck some IE's string.endsWith
                 var o = cursor.inner.pop();
                 cursor.parameters.push(o);
             }

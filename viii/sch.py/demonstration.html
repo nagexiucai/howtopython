@@ -41,7 +41,11 @@
                             // START 算法
                             var b = [];
                             var d = e.target.value;
-                            if (!d) return;
+                            d = parseInt(d);
+                            if (d == NaN || d < 0) {
+                                alert("请输入自然数！");
+                                return;
+                            }
                             var steps = [{"d": d, "r": "!"}]; // 步骤记录
                             while (d) {
                                 r = d%2;
